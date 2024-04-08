@@ -1,7 +1,6 @@
 package com.vero.elsaspeaktimepicker
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -14,12 +13,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.vero.elsaspeaktimepicker.components.TimeCircleComponent
@@ -36,8 +33,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val itemSize = 45.dp
-                    val size = 1000.dp
+                    val itemSize = 50.dp
+                    val size = 1100.dp
 
                     Box(
                         modifier = Modifier
@@ -67,7 +64,7 @@ class MainActivity : ComponentActivity() {
                             },
                             modifier = Modifier
                                 .size(size)
-                                .offset(y = 500.dp)
+                                .offset(y = 750.dp)
                                 .align(Alignment.BottomCenter)
                                 .clip(CircleShape)
                                 .background(CirceBackgroundColor)

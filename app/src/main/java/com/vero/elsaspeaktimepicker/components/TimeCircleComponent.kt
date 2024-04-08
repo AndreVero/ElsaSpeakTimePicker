@@ -27,6 +27,7 @@ fun TimeCircleComponent(
     Layout(
         modifier = modifier,
         content = {
+            // Draw each item with appropriate information
             repeat(items.size) { index ->
                 Box(modifier = Modifier.size(itemSize)) {
                     content(items[index])
@@ -40,22 +41,23 @@ fun TimeCircleComponent(
         val placeables = measurables.map { measurable -> measurable.measure(constraints) }
         val sizeInPx = size.toPx().toInt()
 
-        // we need to remove item size because item will be position not in circle but at the edge
+        // We need to remove item size because item will be position not in circle but at the edge
         val availableSpace = sizeInPx - itemSize.toPx()
 
-        // calculate radius
         val radius = (availableSpace / 2.0).roundToInt()
 
+        //Calculate step between each item
         val angleStep = (360 / items.size.toDouble()).degreesToRadians()
-        // set default item
 
         layout(
             width = sizeInPx,
             height = sizeInPx,
         ) {
             placeables.forEachIndexed { index, placeable ->
+                // Calculate angle of each item
                 val itemAngle = angleStep * index.toDouble()
 
+                // Get coordinates relative to the circle center with paddings
                 val offset = getCoordinates(
                     width = radius.toDouble() - paddingInPx,
                     height = radius.toDouble() - paddingInPx,
@@ -66,7 +68,6 @@ fun TimeCircleComponent(
                     x = offset.x.roundToInt() + radius,
                     y = offset.y.roundToInt() + radius,
                 )
-
             }
         }
     }
