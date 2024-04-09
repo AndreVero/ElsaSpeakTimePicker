@@ -3,6 +3,7 @@ package com.vero.elsaspeaktimepicker.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.Layout
@@ -20,12 +21,13 @@ fun TimeCircleComponent(
     itemSize: Dp,
     onItemPicked: (TimeItem) -> Unit,
     size: Dp,
+    state: TimePickerState = rememberTimePickerState(),
     content: @Composable (TimeItem) -> Unit,
     itemPadding: Dp = 30.dp,
     modifier: Modifier = Modifier,
 ) {
     Layout(
-        modifier = modifier,
+        modifier = modifier.drag(state, onItemPicked = onItemPicked),
         content = {
             // Draw each item with appropriate information
             repeat(items.size) { index ->
@@ -53,7 +55,7 @@ fun TimeCircleComponent(
         ) {
             placeables.forEachIndexed { index, placeable ->
                 // Calculate angle of each item
-                val itemAngle = angleStep * index.toDouble()
+                val itemAngle = angleStep * index.toDouble() + state.angle.toDouble().degreesToRadians()
 
                 // Get coordinates relative to the circle center with paddings
                 val offset = getCoordinates(
@@ -80,4 +82,9 @@ private fun getCoordinates(angle: Double, radius: Double, paddings: Float): Offs
         x = x.toFloat() + radius.toFloat(),
         y = y.toFloat() + radius.toFloat(),
     )
+}
+
+@Composable
+private fun rememberTimePickerState(): TimePickerState = remember {
+    TimePickerState()
 }

@@ -3,12 +3,13 @@ package com.vero.elsaspeaktimepicker.components
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FloatSpringSpec
 import androidx.compose.animation.core.Spring
+import com.vero.elsaspeaktimepicker.TimeItem
 
 class SelectedItem(
     // distance to the closest/selected item
     val angle: Float = 361f,
     // index of the selected item
-    val index: Int = 0,
+    val item: TimeItem? = null,
 )
 
 class TimePickerState {
