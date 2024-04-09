@@ -35,9 +35,7 @@ fun TimeCircleComponent(
             }
         }
     ) { measurables, constraints ->
-
         val paddingInPx = itemPadding.toPx()
-
         val placeables = measurables.map { measurable -> measurable.measure(constraints) }
         val sizeInPx = size.toPx().toInt()
 
@@ -59,25 +57,27 @@ fun TimeCircleComponent(
 
                 // Get coordinates relative to the circle center with paddings
                 val offset = getCoordinates(
-                    width = radius.toDouble() - paddingInPx,
-                    height = radius.toDouble() - paddingInPx,
+                    radius = radius.toDouble(),
                     angle = itemAngle,
+                    paddings = paddingInPx
                 )
 
                 placeable.placeRelative(
-                    x = offset.x.roundToInt() + radius,
-                    y = offset.y.roundToInt() + radius,
+                    x = offset.x.roundToInt(),
+                    y = offset.y.roundToInt(),
                 )
             }
         }
     }
 }
 
-private fun getCoordinates(width: Double, height: Double, angle: Double): Offset {
-    val x = width * sin(angle)
-    val y = height * cos(angle)
+private fun getCoordinates(angle: Double, radius: Double, paddings: Float): Offset {
+    val radiusWithPaddings = radius - paddings
+    val x = radiusWithPaddings * sin(angle)
+    val y = radiusWithPaddings * cos(angle)
     return Offset(
-        x = x.toFloat(),
-        y = y.toFloat(),
+        // Adding radius is necessary to shift the origin from the center of the circle
+        x = x.toFloat() + radius.toFloat(),
+        y = y.toFloat() + radius.toFloat(),
     )
 }
