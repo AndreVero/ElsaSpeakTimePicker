@@ -11,9 +11,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.vero.elsaspeaktimepicker.TimeItem
 import com.vero.elsaspeaktimepicker.degreesToRadians
+import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.roundToInt
 import kotlin.math.sin
+
+// Adjust degrees to start item drawing from top
+private const val SELECTED_ANGLE_DEGREES = 180f
 
 @Composable
 fun TimeCircleComponent(
@@ -49,13 +54,28 @@ fun TimeCircleComponent(
         //Calculate step between each item
         val angleStep = (360 / items.size.toDouble()).degreesToRadians()
 
+        // Clear selected item
+        state.selectedItem = SelectedItem()
+        val changeAngle = state.angle.toDouble() - SELECTED_ANGLE_DEGREES
+
         layout(
             width = sizeInPx,
             height = sizeInPx,
         ) {
             placeables.forEachIndexed { index, placeable ->
                 // Calculate angle of each item
-                val itemAngle = angleStep * index.toDouble() + state.angle.toDouble().degreesToRadians()
+                val itemAngle = changeAngle.degreesToRadians() + angleStep * index.toDouble()
+
+
+                // Convert angles to degrees
+                val itemAngleDegrees = (itemAngle * (180f / PI.toFloat())).toFloat()
+                // Get the distance from top position to current item
+                val distanceToSelectedItem = itemAngleDegrees.mod(360f) - SELECTED_ANGLE_DEGREES
+
+                // Find the closest item
+                if (abs(distanceToSelectedItem) < abs(state.selectedItem.angle)) {
+                    state.selectedItem = SelectedItem(distanceToSelectedItem, items[index])
+                }
 
                 // Get coordinates relative to the circle center with paddings
                 val offset = getCoordinates(

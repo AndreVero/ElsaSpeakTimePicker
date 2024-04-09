@@ -88,6 +88,11 @@ fun Modifier.drag(
                         angle = targetAngle,
                         velocity = velocity,
                     )
+
+                    // Drag to closest item
+                    state.animateTo(state.angle - state.selectedItem.angle)
+                    // Trigger pick listener
+                    state.selectedItem.item?.let(onItemPicked)
                 }
             }
             // In the end save the old angle for further calculations
